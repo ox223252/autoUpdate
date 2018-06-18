@@ -33,8 +33,7 @@ Library created to manage, auto update of software from git repo.
 #include <stdlib.h>
 #include <unistd.h>
 
-int rebuild ( const char * const execName );
-int gitCheck ( const char * const path );
+#include "autoUpdate/autoUpdate.h"
 
 int main( int argc, char ** argv )
 {
