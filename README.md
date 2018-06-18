@@ -15,7 +15,7 @@ This function should be called to execute a `make` in the main dir and relaunch 
 int gitCheck ( const char * const path, uint8_t forceReset );
 ```
 
-This function should be called to check if a remote git dir changed, and pull then. The for
+This function should be called to check if a remote git dir changed, and pull then. The *forceRest* flag should be used to force the reset of a local clone of a distant repo.
 
 
 ## Example:
@@ -72,3 +72,4 @@ int main( int argc, char ** argv )
  -[x] updtae from git
  -[x] rebuild & restart
  -[ ] update binary from web server
+ -[x] check memory leak with valgrind
