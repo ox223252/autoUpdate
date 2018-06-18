@@ -75,7 +75,7 @@ int rebuild ( const char * const execName )
 	return ( __LINE__ );
 }
 
-int gitCheck ( const char * const path )
+int gitCheck ( const char * const path, uint8_t forceReset )
 {
 	char * cmd = NULL;
 	struct stat s;
@@ -107,10 +107,19 @@ int gitCheck ( const char * const path )
 		return ( __LINE__ );
 	}
 
-	sprintf ( cmd, "cd %s && "
-		// "git reset --hard HEAD 2>/dev/null 1>/dev/null && "
-		"git pull", 
-		path );
+	if ( forceReset )
+	{ // force to reset to the head of git remote head
+		sprintf ( cmd, "cd %s && "
+			"git reset --hard HEAD 2>/dev/null 1>/dev/null && "
+			"git pull", 
+			path );
+	}
+	else
+	{ // keep modification from remote head
+		sprintf ( cmd, "cd %s && "
+			"git pull", 
+			path );	
+	}
 
 	fd = popen ( cmd, "re" );
 	if ( !fd )

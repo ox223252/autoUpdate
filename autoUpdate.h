@@ -37,13 +37,15 @@
 int rebuild ( const char * const execName );
 
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn int rebuild ( const char * const path );
+/// \fn int gitCheck ( const char * const path, uint8_t forceRese;
 /// \param [in] path : path to the git folder what should be updated
+/// \param [in] forceRese : set this flag to force to reset git repo to the head
+///     of remote branch
 /// \brief this function will execute a git pull for the folder path
 /// \return -1: the folder was updated
 ///         0: no update was needed
 ///         X: failure occured, see errno for more details
 ////////////////////////////////////////////////////////////////////////////////
-int gitCheck ( const char * const path );
+int gitCheck ( const char * const path, uint8_t forceRese;
 
 #endif
