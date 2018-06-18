@@ -2,7 +2,24 @@
 
 Library created to manage, auto update of software from git repo.
 
-## tree to work for example:
+## functions:
+### rebuild:
+```C
+int rebuild ( const char * const execName );
+```
+
+This function should be called to execute a `make` in the main dir and relaunch the software.
+
+### gitCheck:
+```C
+int gitCheck ( const char * const path, uint8_t forceReset );
+```
+
+This function should be called to check if a remote git dir changed, and pull then. The for
+
+
+## Example:
+### tree to work for example:
 ```C
 .
 ├── a.out
@@ -21,12 +38,7 @@ Library created to manage, auto update of software from git repo.
     └── main.c
 ```
 
-
-## TODO:
- -[x] updtae from git
- -[x] rebuild & restart
- -[ ] update binary from web server
-
+### example sources:
 ```C
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,9 +48,9 @@ Library created to manage, auto update of software from git repo.
 
 int main( int argc, char ** argv )
 {
-	if ( ( gitCheck ( "src/freeOnExit" ) == -1 ) ||
-		( gitCheck ( "src/autoUpdate" ) == -1 ) ||
-		( gitCheck ( "." ) == -1 ) )
+	if ( ( gitCheck ( "src/freeOnExit", 1 ) == -1 ) ||
+		( gitCheck ( "src/autoUpdate", 1 ) == -1 ) ||
+		( gitCheck ( ".", 0 ) == -1 ) )
 	{
 		printf ( "rebuild\n" );
 		if ( rebuild ( argv[ 0 ] ) )
@@ -55,3 +67,8 @@ int main( int argc, char ** argv )
 	return 0;
 }
 ```
+
+## TODO:
+ -[x] updtae from git
+ -[x] rebuild & restart
+ -[ ] update binary from web server
