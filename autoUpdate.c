@@ -60,7 +60,7 @@ int gitCheck ( const char * const path )
 	char * cmd = NULL;
 	struct stat s;
 	pid_t pid = 0;
-	int * fd;
+	FILE * fd = NULL;
 
 	if ( !path )
 	{
@@ -87,25 +87,30 @@ int gitCheck ( const char * const path )
 	{
 		return ( __LINE__ );
 	}
+
 	sprintf ( cmd, "cd %s && "
 		"git reset --hard HEAD 2>/dev/null 1>/dev/null && "
-		"RET=$( git pull  2> /dev/null | grep -E \"Already up-to-date.\" ) && "
-		"[ \"$RET\" != \"\" ] && exit 0 || exit 1 ", 
+		"git pull", 
 		path );
 
-
-	if ( system ( cmd ) )
-	{ // cmd failed
-		printf ( "upgrate needed\n" );
-		free ( cmd );
-		cmd = NULL;
-		return ( -1 );
-	}
-	else
+	fd = popen ( cmd, "re" );
+	if ( !fd )
 	{
-		printf ( "upgrate not needed\n" );
-		free ( cmd );
-		cmd = NULL;
 		return ( 0 );
 	}
+
+	while ( fscanf ( fd, "%256[^\n]", cmd ) > 0 )
+	{
+		if ( !strcmp ( cmd, "Already up-to-date." ) )
+		{
+			free ( cmd );
+			cmd = NULL;
+			return  ( 0 );
+		}
+	}
+
+	free ( cmd );
+	cmd = NULL;
+	pclose ( fd );
+	return ( -1 );
 }
