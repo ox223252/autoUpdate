@@ -46,6 +46,6 @@ int rebuild ( const char * const execName );
 ///         0: no update was needed
 ///         X: failure occured, see errno for more details
 ////////////////////////////////////////////////////////////////////////////////
-int gitCheck ( const char * const path, uint8_t forceRese;
+int gitCheck ( const char * const path, uint8_t forceReset );
 
 #endif
