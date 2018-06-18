@@ -25,7 +25,6 @@
 #include <unistd.h>
 
 #include "autoUpdate.h"
-#include "../freeOnExit/freeOnExit.h"
 
 int rebuild ( const char * const execName )
 {
