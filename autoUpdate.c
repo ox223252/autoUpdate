@@ -25,11 +25,13 @@
 #include <unistd.h>
 
 #include "autoUpdate.h"
+#include "../freeOnExit/freeOnExit.h"
 
 int rebuild ( const char * const execName )
 {
 	char * cmd = NULL;
-	pid_t pid = 0;
+	FILE * fd = 0;
+
 	if ( !execName )
 	{
 		errno = EINVAL;
@@ -44,22 +46,39 @@ int rebuild ( const char * const execName )
 		return ( __LINE__ );
 	}
 	sprintf ( cmd, "make" );
-	system ( cmd );
+
+	fd = popen ( cmd, "re" );
+	if ( !fd )
+	{
+		free ( cmd );
+		cmd = NULL;
+		return ( 0 );
+	}
+	pclose ( fd );
 
 	sleep ( 1 );
 
-	sprintf ( cmd, "kill %d && %s", getpid ( ), execName );
-	system ( cmd );
+	sprintf ( cmd, "%s &", execName );
+
+	if ( fork() )
+	{ // restart new processus in the same term
+		execl ( execName, execName, NULL );
+	}
+	else
+	{ // free memory and exit clearly
+		sleep ( 1 );
+		free ( cmd );
+		cmd = NULL;
+		exit ( 0 );
+	}
 
 	return ( __LINE__ );
 }
 
 int gitCheck ( const char * const path )
 {
-	int link[ 2 ];
 	char * cmd = NULL;
 	struct stat s;
-	pid_t pid = 0;
 	FILE * fd = NULL;
 
 	if ( !path )
@@ -89,14 +108,14 @@ int gitCheck ( const char * const path )
 	}
 
 	sprintf ( cmd, "cd %s && "
-		"git reset --hard HEAD 2>/dev/null 1>/dev/null && "
+		// "git reset --hard HEAD 2>/dev/null 1>/dev/null && "
 		"git pull", 
 		path );
 
 	fd = popen ( cmd, "re" );
 	if ( !fd )
 	{
-		return ( 0 );
+		return ( __LINE__ );
 	}
 
 	while ( fscanf ( fd, "%256[^\n]", cmd ) > 0 )
@@ -105,6 +124,7 @@ int gitCheck ( const char * const path )
 		{
 			free ( cmd );
 			cmd = NULL;
+			pclose ( fd );
 			return  ( 0 );
 		}
 	}

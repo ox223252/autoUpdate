@@ -7,7 +7,6 @@ Library created to manage, auto update of software from git repo.
 .
 ├── a.out
 ├── makefile
-├── README.md
 └── src
     ├── autoUpdate
     │   ├── autoUpdate.c
@@ -38,8 +37,10 @@ Library created to manage, auto update of software from git repo.
 int main( int argc, char ** argv )
 {
 	if ( ( gitCheck ( "src/freeOnExit" ) == -1 ) ||
-		( gitCheck ( "src/autoUpdate" ) == -1 ) )
+		( gitCheck ( "src/autoUpdate" ) == -1 ) ||
+		( gitCheck ( "." ) == -1 ) )
 	{
+		printf ( "rebuild\n" );
 		if ( rebuild ( argv[ 0 ] ) )
 		{
 			printf ( "failed on restart\n" );
