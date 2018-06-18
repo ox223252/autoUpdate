@@ -75,7 +75,7 @@ int rebuild ( const char * const execName )
 	return ( __LINE__ );
 }
 
-int gitCheck ( const char * const path, uint8_t forceReset )
+int gitCheck ( const char * const path, unsigned char forceReset )
 {
 	char * cmd = NULL;
 	struct stat s;

@@ -37,7 +37,7 @@
 int rebuild ( const char * const execName );
 
 ////////////////////////////////////////////////////////////////////////////////
-/// \fn int gitCheck ( const char * const path, uint8_t forceRese;
+/// \fn int gitCheck ( const char * const path, unsigned char forceRese );
 /// \param [in] path : path to the git folder what should be updated
 /// \param [in] forceRese : set this flag to force to reset git repo to the head
 ///     of remote branch
@@ -46,6 +46,6 @@ int rebuild ( const char * const execName );
 ///         0: no update was needed
 ///         X: failure occured, see errno for more details
 ////////////////////////////////////////////////////////////////////////////////
-int gitCheck ( const char * const path, uint8_t forceReset );
+int gitCheck ( const char * const path, unsigned char forceReset );
 
 #endif
